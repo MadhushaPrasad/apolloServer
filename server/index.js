@@ -5,3 +5,8 @@ const {SubscriptionServer} = require('subscriptions-transport-ws')
 const {execute,subscribe} = require('graphql') 
 const {ApolloServer} = require('apollo-server-express') //this is apollo server
 const mongoose = require('mongoose') //this is mongoose
+
+const typeDefs = require('./schema/typeDefs') //this is typeDefs
+const resolvers = require('./schema/resolvers') //this is resolvers
+
+
