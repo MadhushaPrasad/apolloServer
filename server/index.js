@@ -7,54 +7,58 @@ const { ApolloServer } = require("apollo-server-express"); //this is apollo serv
 const mongoose = require("mongoose"); //this is mongoose
 
 const typeDefs = require("./schema/typeDefs"); //this is typeDefs
-const resolvers = require("./schema/resolvers")(
-  //this is resolvers
+const resolvers = require("./schema/resolvers");
+//this is resolvers
 
-  async function () {
-    const app = express();
-    const httpServer = createServer(app);
-    const schema = makeExecutableSchema({ typeDefs, resolvers });
+mongoose.set("strictQuery", true);
 
-    const subscriptionServer = SubscriptionServer.create(
-      {
-        schema,
-        execute,
-        subscribe,
-      },
-      {
-        server: httpServer,
-        path: "/graphql",
-      }
-    );
+(async function () {
+  const app = express();
+  const httpServer = createServer(app);
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-    const server = new ApolloServer({
+  const subscriptionServer = SubscriptionServer.create(
+    {
       schema,
-      plugins: [
-        {
-          async serverWillStart() {
-            return {
-              async drainServer() {
-                subscriptionServer.close();
-              },
-            };
-          },
+      execute,
+      subscribe,
+    },
+    {
+      server: httpServer,
+      path: "/graphql",
+    }
+  );
+
+  const server = new ApolloServer({
+    schema,
+    plugins: [
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
         },
-      ],
-    });
+      },
+    ],
+  });
 
-    await server.start();
-    server.applyMiddleware({ app });
+  await server.start();
+  server.applyMiddleware({ app });
 
-    await mongoose.connect("", {});
+  await mongoose.connect(
+    "mongodb+srv://1234:1234@cluster0.rkocw.mongodb.net/?retryWrites=true&w=majority",
+    {}
+  );
 
-    console.log("MongoDB Connected");
+  console.log("MongoDB Connected");
 
-    const PORT = process.env.PORT || 8000;
+  const PORT = process.env.PORT || 8000;
 
-    httpServer.listen({ port: PORT }, () => {
-      console.log(
-        `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
-      );
-    });
-  }
-)();
+  httpServer.listen({ port: PORT }, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+    );
+  });
+})();
