@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const roomSchema = mongoose.Schema({
+const roomSchema = new mongoose.Schema({
   topic: String,
   name: String,
   lang: String,
@@ -26,6 +26,6 @@ const roomSchema = mongoose.Schema({
   ],
 });
 
-const Post = mongoose.model("Room", roomSchema);
+const Room = mongoose.model("RoomModel", roomSchema);
 
-module.exports = Post;
+module.exports = Room;

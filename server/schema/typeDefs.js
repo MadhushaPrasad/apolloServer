@@ -1,20 +1,18 @@
 const { gql } = require("apollo-server");
 
 const typeDefs = gql`
-
-
-type Message {
+  type Message {
     user: String
     text: String
-}
+  }
 
-type roomUser {
+  type roomUser {
     userId: String
-    userName: String
+    name: String
     image: String
-}
+  }
 
-type Room {
+  type Room {
     id: ID
     topic: String
     name: String
@@ -22,16 +20,29 @@ type Room {
     capacity: String
     creator: String
     createdAt: String
-    conversation: [Message]
-    roomUsers: [roomUser]
-}
+    conversation: [Message!]!
+    roomUser: [roomUser!]!
+  }
 
-
-type Query {
+  type Query {
     hello: String
-    getAllRooms: [Room]
-}
+    getAllRooms: [Room!]!
+  }
 
+  type RoomInput {
+    topic: String
+    name: String
+    lang: String
+    capacity: String
+    creator: String
+    createdAt: String
+    conversation: String
+    roomUser: String
+  }
+
+  type Mutation {
+    createRoom(room: RoomInput): Room
+  }
 `;
 
 module.exports = typeDefs;

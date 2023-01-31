@@ -48,7 +48,7 @@ mongoose.set("strictQuery", true);
   server.applyMiddleware({ app });
 
   await mongoose.connect(
-    "mongodb+srv://1234:1234@cluster0.rkocw.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://tharinduspm:tharindu12345@spm.jr6dlnb.mongodb.net/?retryWrites=true&w=majority"    ,
     {}
   );
 
